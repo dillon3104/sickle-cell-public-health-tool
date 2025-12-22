@@ -1,0 +1,5 @@
+measure_id,measure_name,location_id,location_name,sex_id,sex_name,age_group_id,age_group_name,cause_id,cause_name,metric_id,metric_name,year_id,val,upper,lower
+1,Prevalence,100,Testland,3,Both,22,All Ages,999,Sickle cell disorders,1,Rate,2020,10.0,11.0,9.0
+1,Prevalence,100,Testland,3,Both,22,All Ages,999,Sickle cell disorders,1,Rate,2021,12.0,13.0,11.0
+1,Prevalence,101,Examplestan,3,Both,22,All Ages,999,Sickle cell disorders,1,Rate,2021,20.0,21.0,19.0
+2,Mortality,100,Testland,3,Both,22,All Ages,999,Sickle cell disorders,2,Number,2021,5.0,6.0,4.0
