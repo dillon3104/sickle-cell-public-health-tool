@@ -59,3 +59,11 @@ class TestDB(unittest.TestCase):
         years = db.list_years(self.conn)
         self.assertIn("Rate", metrics)
         self.assertIn(2021, years)
+
+    def test_list_locations_no_limit_branch(self):
+        db.insert_many(self.conn, iter_records(self.sample_path), batch_size=10)
+        locs = db.list_locations(self.conn)  # no limit -> else branch
+        self.assertGreaterEqual(len(locs), 2)
+        self.assertIn("Testland", locs)
+
+

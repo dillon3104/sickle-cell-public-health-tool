@@ -83,3 +83,20 @@ class TestAnalysis(unittest.TestCase):
         )
         self.assertTrue(len(rows) >= 1)
 
+    def test_get_distinct_values_non_year_branch(self):
+        locs = analysis.get_distinct_values(self.conn, "location")
+        self.assertIn("Testland", locs)
+
+    def test_compare_locations_invalid_order_hits_raise_line(self):
+        with self.assertRaises(ValueError):
+            analysis.compare_locations(
+                self.conn,
+                measure="Prevalence",
+                metric="Rate",
+                year=2021,
+                order="invalid",
+            )
+
+
+    
+
