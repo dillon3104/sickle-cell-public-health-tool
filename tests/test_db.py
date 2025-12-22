@@ -1,6 +1,7 @@
 import unittest
 import sqlite3
 from pathlib import Path
+import tempfile
 
 from src import db
 from src.loader import iter_records
@@ -28,3 +29,33 @@ class TestDB(unittest.TestCase):
         measures = db.list_measures(self.conn)
         self.assertIn("Prevalence", measures)
         self.assertIn("Mortality", measures)
+
+
+    def test_connect_creates_db_file_and_connects(self):
+        with tempfile.TemporaryDirectory() as td:
+            db_path = Path(td) / "temp.db"
+            conn = db.connect(db_path)
+            try:
+                db.init_db(conn)
+                self.assertTrue(db_path.exists())
+            finally:
+                conn.close()
+
+    def test_clear_data_empties_table(self):
+        db.insert_many(self.conn, iter_records(self.sample_path), batch_size=10)
+        self.assertEqual(db.row_count(self.conn), 4)
+
+        db.clear_data(self.conn)
+        self.assertEqual(db.row_count(self.conn), 0)
+
+    def test_list_locations_limit_branch(self):
+        db.insert_many(self.conn, iter_records(self.sample_path), batch_size=10)
+        locs = db.list_locations(self.conn, limit=1)
+        self.assertEqual(len(locs), 1)
+
+    def test_list_metrics_and_years(self):
+        db.insert_many(self.conn, iter_records(self.sample_path), batch_size=10)
+        metrics = db.list_metrics(self.conn)
+        years = db.list_years(self.conn)
+        self.assertIn("Rate", metrics)
+        self.assertIn(2021, years)

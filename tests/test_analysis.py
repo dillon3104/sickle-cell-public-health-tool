@@ -43,3 +43,43 @@ class TestAnalysis(unittest.TestCase):
         self.assertAlmostEqual(stats["min"], 12.0)
         self.assertAlmostEqual(stats["max"], 20.0)
         self.assertAlmostEqual(stats["mean"], 16.0)
+
+    def test_get_distinct_values_invalid_column_raises(self):
+        with self.assertRaises(ValueError):
+            analysis.get_distinct_values(self.conn, "not_a_column")
+
+    def test_get_distinct_values_year_branch(self):
+        years = analysis.get_distinct_values(self.conn, "year")
+        self.assertIn("2021", years)
+
+    def test_compare_locations_asc(self):
+        rows = analysis.compare_locations(
+            self.conn,
+            measure="Prevalence",
+            metric="Rate",
+            year=2021,
+            sex="Both",
+            age_group="All Ages",
+            cause="Sickle cell disorders",
+            top_n=10,
+            order="asc",
+        )
+        # Ascending: Testland (12) should appear before Examplestan (20)
+        self.assertEqual(rows[0][0], "Testland")
+        self.assertAlmostEqual(rows[0][1], 12.0)
+
+    def test_compare_locations_without_cause(self):
+        # cause omitted branch
+        rows = analysis.compare_locations(
+            self.conn,
+            measure="Prevalence",
+            metric="Rate",
+            year=2021,
+            sex="Both",
+            age_group="All Ages",
+            cause=None,
+            top_n=10,
+            order="desc",
+        )
+        self.assertTrue(len(rows) >= 1)
+
