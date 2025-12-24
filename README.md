@@ -100,6 +100,10 @@ dataset.
 
 \- Unit tests with measured code coverage
 
+\- Export of trend and comparison results to CSV
+
+
+
 
 
 ---
@@ -138,6 +142,7 @@ sickle-cell-public-health-tool/
 
 │ └── cli.py # Command-line interface
 
+│ └── exporter.py # exports options 3 and 5 into csv files
 │
 
 ├── tests/ # Unit tests
@@ -196,6 +201,13 @@ Choose Option 1 to load the dataset into the SQLite database.
 
 Subsequent runs can skip loading unless the database is deleted.
 
+
+Exporting Results
+
+Trend results (Option 3) and location comparisons (Option 5) can be exported to CSV.
+After the results are displayed, the user is prompted to export the output, which is saved to the outputs/ directory.
+
+These exported files can be opened in Excel for further analysis or reporting.
 
 
 Running Tests
