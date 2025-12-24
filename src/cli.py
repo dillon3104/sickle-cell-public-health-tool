@@ -7,6 +7,7 @@ from src import db
 from src.loader import iter_records
 from src import analysis
 from src import visualise
+from src import exporter
 
 
 
@@ -160,6 +161,21 @@ def menu() -> None:
                         save_path=save_path,
                     )
 
+                    export_csv = input("Export trend results to CSV? (y/n): ").strip().lower() == "y"
+                    if export_csv:
+                        out_path = exporter.export_trend_csv(
+                            rows=series,
+                            out_dir="outputs",
+                            location=location,
+                            measure=measure,
+                            metric=metric,
+                            sex=sex,
+                            age_group=age,
+                            cause=cause,
+                        )
+                        print(f"Saved CSV to: {out_path}")
+
+
 
             elif choice == "4":
                 # Summary stats
@@ -233,6 +249,22 @@ def menu() -> None:
                         save_path=save_path,
                         max_labels=min(25, top_n),
                     )
+
+                    export_csv = input("Export comparison results to CSV? (y/n): ").strip().lower() == "y"
+                    if export_csv:
+                        out_path = exporter.export_compare_csv(
+                            rows=rows,
+                            out_dir="outputs",
+                            year=year,
+                            measure=measure,
+                            metric=metric,
+                            sex=sex,
+                            age_group=age,
+                            cause=cause,
+                            order=order,
+                        )
+                        print(f"Saved CSV to: {out_path}")
+
 
             elif choice == "6":
                 print("Goodbye!")

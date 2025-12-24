@@ -13,5 +13,7 @@ Thumbs.db
 # Databases
 *.db
 
-# Large data (optional – recommended)
+# Large data
 data/raw/*.csv
+
+outputs/
